@@ -2,20 +2,46 @@
 
 {% block content %}
 
-<div class="col-md-6 offset-md-3">
-
 {% if user.is_authenticated %}
 
-<h1>Hello World!</h1>
+<h1>Customers</h1>
+<table class="table table-bordered table-hover table-striped">
+    <thead class="table-dark">
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Name</th>
+        <th scope="col">Email</th>
+        <th scope="col">Phone</th>
+        <th scope="col">Address</th>
+        <th scope="col">Created_at</th>
+      </tr>
+    </thead>
+    <tbody class="table-group-divider">
+            {% if customers %}
+
+                {% for customer in customers %}
+                    <tr>
+                    <td><a href="{% url 'customer' customer.id %}">{{ customer.id }}</a></td>
+                    <td>{{ customer.first_name }}
+                    {{ customer.last_name }}</td>
+                    <td>{{ customer.email }}</td>
+                    <td>{{ customer.phone_number }}</td>
+                    <td>{{ customer.address }}</td>
+                    <td>{{ customer.created_at }}</td>
+                    </tr>
+                {% endfor %}
+            
+            {% endif %} 
+    </tbody>
+</table>
 
 {% else %}
-
+    <div class="col-md-6 offset-md-3">
     <h1>Login</h1>
     <br/>
     <form method="POST" action="{% url 'home' %}">
         {% csrf_token %}
 
-        <form>
             <div class="mb-3">
                 <label for="exampleInputPassword1" class="form-label">Username</label>
               <input type="text" class="form-control" name="username", placeholder="Username" required>
@@ -24,12 +50,10 @@
                 <label for="exampleInputPassword1" class="form-label">Password</label>
                 <input type="password" class="form-control" name="password", placeholder="Password" required>
             </div>
-            <button type="submit" class="btn btn-secondary">Login</button>
-          </form>
+            <button type="submit" class="btn btn-primary btn-dark">Login</button>
 
     </form>
-</div>
-
+    </div>
 {% endif %}
 
 {% endblock %}
